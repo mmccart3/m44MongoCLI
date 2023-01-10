@@ -4,8 +4,9 @@ class Movie {
         this.actor = inputActor;
         this.director = inputDirector;
     };
-    add () {
+    async create (movieCollection) {
         console.log("Entering add within index.js");
+        await movieCollection.insertOne(this);
         //code to save a movie to the database here;
     };
 };
