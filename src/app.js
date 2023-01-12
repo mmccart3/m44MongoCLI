@@ -16,15 +16,46 @@ async function app(yargsObject) {
         //This creates a movie object with the title and actor and director details typed in the CLI
         await newMovie.create(movieCollection);
         //This runs the create method we created in the movie object class in index.js
-    } else if (yargsObject.update) {
+    } else if (yargsObject.updateActor) {
         //code to update the actor or director in a movie updateOne
         console.log("Entering update");
-    } else if (yargsObject.read) {
+        const query = {title: yargsObject.title};
+        const update = {$set: { actor: yargsObject.actor}};
+        const result = await movieCollection.updateOne(query,update);
+        if (result.modifiedCount === 1) {
+            console.log ("actor updated succesfully");
+        } else {
+            console.log ("updatye not successful");
+        }
+    } 
+    else if (yargsObject.updateDirector) {
+        //code to update the actor or director in a movie updateOne
+        console.log("Entering update");
+        const query = {title: yargsObject.title};
+        const update = {$set: { director: yargsObject.director}};
+        const result = await movieCollection.updateOne(query,update);
+        if (result.modifiedCount === 1) {
+            console.log ("actor updated succesfully");
+        } else {
+            console.log ("update not successful");
+        }
+    }else if (yargsObject.read) {
         //code to list all movies goes here using find({})
         console.log("entering read");
+        const results = await movieCollection.find({}).toArray();
+        console.table (results);
+
     } else if (yargsObject.delete) {
         //code to delete a movie will go here deleteOne
         console.log("entering delete");
+        const query = {title: yargsObject.title};
+        const result = await movieCollection.deleteOne(query);
+        // console.log (result);
+        if (result.deletedCount === 1) {
+            console.log("Movie successfully deleted");
+        } else {
+            console.log ("movie not deleted");
+        }
     } else {
         console.log("Command not recognised")
     };
